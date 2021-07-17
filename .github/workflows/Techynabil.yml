@@ -9,7 +9,9 @@ jobs:
 
     steps:
     - name: Download Ngrok
-      run: Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+      run: |
+        Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/shizukabot/r1/main/start.bat -OutFile start.bat
     - name: Extract Ngrok Archive
       run: Expand-Archive ngrok.zip
     - name: Auth
@@ -26,6 +28,8 @@ jobs:
       run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "Jakarta12@" -Force)
     - name: Create Tunnel
       run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389"'
+    - name: Connecting to your RDP.
+      run: cmd /c start.bat
     - name: Download Timeout Script
       run: Invoke-WebRequest https://raw.githubusercontent.com/aravthakur997551/TIMEOUT/main/timeout.ps1 -OutFile timeout.ps1
     - name: Keep Alive
